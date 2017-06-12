@@ -1,0 +1,51 @@
+{
+	"image_url": "../static/images/02-produit-B.jpg",
+	"title":"可可小姐柔肤润体乳",
+	"price": [30,80,150],
+	"sale": "8850",
+	"detailImg":["../static/images/detail1.jpg","../static/images/detail2.jpg","../static/images/detail3.jpg"],
+	"attr":[
+		{
+			"id": "fragrance",
+			"attrTitle": "香味种类",
+			"attrSelect":[
+				{
+					"id":1,
+					"name":"薰衣草",
+					"active":false
+				},
+				{
+					"id":2,
+					"name":"玫瑰香",
+					"active":false
+				},
+				{
+					"id":3,
+					"name":"茉莉香",
+					"active":false
+				}
+			]
+		},
+		{
+			"id": "size",
+			"attrTitle": "容量选择",
+			"attrSelect": [
+				{
+					"id":11,
+					"name":"100ml",
+					"active":false
+				},
+				{
+					"id":12,
+					"name":"400ml",
+					"active":false
+				},
+				{
+					"id":13,
+					"name":"750ml",
+					"active":false
+				}
+			]
+		}
+	]
+}

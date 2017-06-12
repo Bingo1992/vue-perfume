@@ -6,7 +6,7 @@ import store from './vuex/store'
 import router from './router'
 import axios from 'axios'
 
-import './assets/fonts'
+import './assets/css/fonts'
 import './assets/scss/style'
 import './config/rem'
 
