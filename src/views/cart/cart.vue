@@ -2,7 +2,7 @@
   <div>
     <loading v-if="showLoading"></loading>
 
-    <div v-if="!showLoading && !userInfo" class="nothing">
+    <div v-if="!userInfo" class="nothing">
       <i class="bg-red icon-gantan"></i>
       <p>请<router-link class="font-blue lg-font" to="/login">登录</router-link>后查看更多信息</p>
 
@@ -98,9 +98,11 @@ export default {
   },
   methods: {
     async initData() {
-      let res = await cartList();
-      this.cartList = res.result.proList;
-      this.showLoading = false;
+      if(this.userInfo){
+         let res = await cartList();
+         this.cartList = res.result.proList;
+         this.showLoading = false;
+      }
     },
     //修改数量
     changeAmount(cart,value) {
@@ -147,7 +149,7 @@ export default {
         if(this.checkAll){
           this.checks[index] = cart.proID;
         }else {
-          this.checks[index] = '';
+          this.checks = [];
         }
         // if(typeof this.checks[index] == "undefined"){
         //   this.$set(cart,"checked",this.checkAll);
@@ -167,6 +169,11 @@ export default {
     },
     //删除购物车
     confirmBtn() {
+      this.checks.forEach((check, index) => {
+          if(check === this.cartList[this.currentIndex].proID){
+            this.checks.splice(index,1);
+          }
+      });
       this.cartList.splice(this.currentIndex,1);
       this.calcTotalMoney();
     },
