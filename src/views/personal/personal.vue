@@ -12,37 +12,6 @@
       </router-link>
     </section>
 
-   <!--  <div class="bg-show">
-        <a class="list-box" href="order_list.html">
-            <i class="icon-order"></i>
-            <span class="list-info">
-                <h4>我的订单</h4>
-            </span>
-            <span class="font-gray">查看全部订单</span>
-            <i class="icon-right"></i>
-        </a>
-        <ul class="flex-layout border-top">
-            <li>
-                <a href="#">
-                    <i class="icon-pay"></i>
-                    <p>代付款订单</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="icon-flow"></i>
-                    <p>待收货订单</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="icon-commet"></i>
-                    <p>待评价订单</p>
-                </a>
-            </li>
-        </ul>
-    </div> -->
-
     <!-- 列表 -->
     <ul class="border-list">
         <li>

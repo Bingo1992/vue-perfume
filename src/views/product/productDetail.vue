@@ -107,7 +107,6 @@ export default {
             amount: 1,//添加的数量
             price: 0,//属性选中的价格
             btnType: 0//判断按钮类型,0为选则属性，1为加入购物车，2为购买
-
 		}
 	},
     components: {
