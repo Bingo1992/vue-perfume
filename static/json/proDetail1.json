@@ -11,17 +11,17 @@
 			"attrTitle": "香味种类",
 			"attrSelect":[
 				{
-					"id":1,
+					"id":"51061",
 					"name":"薰衣草",
 					"active":false
 				},
 				{
-					"id":2,
+					"id":"24808",
 					"name":"玫瑰香",
 					"active":false
 				},
 				{
-					"id":3,
+					"id":"18543",
 					"name":"茉莉香",
 					"active":false
 				}
@@ -32,17 +32,17 @@
 			"attrTitle": "容量选择",
 			"attrSelect": [
 				{
-					"id":11,
+					"id":"18991",
 					"name":"10ml",
 					"active":false
 				},
 				{
-					"id":12,
+					"id":"11894",
 					"name":"20ml",
 					"active":false
 				},
 				{
-					"id":13,
+					"id":"18795",
 					"name":"50ml",
 					"active":false
 				}

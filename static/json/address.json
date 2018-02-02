@@ -1,0 +1,25 @@
+[{
+	"id":12345011,
+	"address_detail":"广州市天河区天府路107号",
+	"mobile":"13681711251",
+	"name":"黄先生",
+	"userDefault":true
+},{
+	"id":12345012,
+	"address_detail":"广州市天河区天府路207号",
+	"mobile":"13681711252",
+	"name":"王先生",
+	"userDefault":false
+},{
+	"id":12345013,
+	"address_detail":"广州市天河区天府路307号",
+	"mobile":"13681711253",
+	"name":"李先生",
+	"userDefault":false
+},{
+	"id":12345014,
+	"address_detail":"广州市天河区天府路407号",
+	"mobile":"13681711254",
+	"name":"孟先生",
+	"userDefault":false
+}]

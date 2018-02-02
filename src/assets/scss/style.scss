@@ -24,6 +24,10 @@
 .horizational-text {text-align: right;}
 
 .banner{margin-bottom: 80px;}
+.banner-bt {
+    margin-top: 60px;
+    margin-bottom: 80px;
+}
 // .banner-t {margin-top: 60px;}
 // .banner-tt {margin-top: 102px;}
 // .banner-tb {margin-top: 60px;margin-bottom:160px; }
@@ -75,7 +79,7 @@
 }
 .circlePoint {
     position: absolute;
-    top: 0;
+    top: 4px;
     right: 10%;
     @include circle(18px);
     min-width: 18px;
@@ -95,7 +99,9 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left{
 .fixed-bottom {
     @extend %fixed-bottom;
 }
-
+.fixed-top {
+    @extend %fixed-top;
+}
 // --public-style---
 
 .nowrap {
@@ -112,6 +118,19 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left{
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+// // 未读个数
+// .circlePoint {
+//     position: absolute;
+//     top: 4px;
+//     right: 10%;
+//     @include circle(18px);
+//     min-width: 18px;
+//     padding: 0 4px;
+//     display: block;
+//     color: #fff;
+//     background-color: $color-red;
+//     font-size: 10px;
+// }
 .border-top,
 .border-bottom,
 .border-right,
@@ -313,6 +332,7 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left{
         -webkit-box-pack: center;
         -webkit-box-align: center;
         text-align: center;
+        position: relative;
     }
 
     // a{

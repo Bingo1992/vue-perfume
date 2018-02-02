@@ -10,6 +10,7 @@
       <router-link to="/cart">
         <i class="icon-cart"></i>
         <p>购物车</p>
+        <span v-if="cartNum!=0" class="circlePoint">{{cartNum}}</span>
       </router-link>
     </li>
     <li>
@@ -30,13 +31,45 @@
 
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'nav-bar',
   data () {
     return {
-      // msg: 'Welcome to Your Vue.js App'
+      // cartAmount: 0
     }
-  }
+  },
+  // props: ['cartAmount'],
+  computed: {
+    ...mapState([
+        'userInfo','cartList'
+    ]),
+    cartNum () {
+      let cartNum = 0;
+      this.cartList && this.cartList.forEach( item => {
+         cartNum += item.proNum;
+      })
+      return cartNum;
+    }
+  },
+
+  // methods:{
+  //   async initData() {
+  //     if(this.userInfo){
+  //       let res = await cartList();
+  //       this.cartAmount = res.result.cartAmount;
+  //     }
+  //   }
+  // },
+  // watch: {
+  //   userInfo: function (value) {
+  //       if (value) {
+  //           this.initData();
+  //       }
+  //   }
+  // }
+
 }
 </script>
 

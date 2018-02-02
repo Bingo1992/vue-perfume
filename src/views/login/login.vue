@@ -33,7 +33,7 @@
 
 <script>
 import alertTip from '../../components/alertTip'
-import {mapMutations} from 'vuex'
+import {mapMutations,mapState} from 'vuex'
 import {mobileCode, checkExsis, sendLogin} from '../../service/getData'
 export default {
   name: 'login',
@@ -41,7 +41,6 @@ export default {
     return {
         mobileNum: null,//手机号
         computedTime: 0, //倒数记时
-        userInfo: null, //获取到的用户信息
         validate_token: null, //获取短信时返回的验证值，登陆时需要
         mobileCode: null, //验证码
         alertText: "",
@@ -64,7 +63,10 @@ export default {
   },
   methods: {
     ...mapMutations([
-        'RECORD_USERINFO',
+        'RECORD_USERINFO'
+    ]),
+    ...mapState([
+        'userInfo'
     ]),
     //获取短信验证码
     async getVerifyCode(){
@@ -105,8 +107,10 @@ export default {
         }
         //手机号登录
         this.arr = await sendLogin(this.mobileCode,this.mobileNum,this.validate_token);   
-        this.userInfo = this.arr[0];
-          // console.log(sendLogin())                                 
+        this.userInfo = this.arr[0]; 
+                                 
+        // this.CART_AMOUNT(this.userInfo.cartAmount)
+       
         //如果返回的值不正确，则弹出提示框，返回的值正确则返回上一页
         if (!this.userInfo.user_id) {
             alert(this.userInfo.message);

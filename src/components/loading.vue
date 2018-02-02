@@ -16,14 +16,14 @@
 </template>
 <style scoped>
 	.loading{
-		  position: fixed;
-            z-index: 1000;
-            width:100%;
-            height:90px;
-            top: 40%;
-            left: 0;
-            bottom: 0;
-            right: 0;
+		position: fixed;
+        z-index: 1000;
+        width:100%;
+        height:90px;
+        top: 40%;
+        left: 0;
+        bottom: 0;
+        right: 0;
 	}
 	.loading-inner{
 		display:flex;

@@ -12,7 +12,7 @@
 
 import Banner from '../../components/bannerPic'
 import FooterNav from '../../components/Footer'
-import ProList from '../product/productList'
+import ProList from '../../components/productList'
 // import Slide from '../../components/slide.vue'
 // import ContentA from '../../components/content.vue'
 

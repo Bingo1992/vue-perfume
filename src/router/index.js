@@ -9,6 +9,8 @@ const Home = r => require.ensure([], () => r(require('../views/home/home')), 'ho
 const Cart = r => require.ensure([], () => r(require('../views/cart/cart')), 'cart');
 const Personal = r => require.ensure([], () => r(require('../views/personal/personal')), 'personal');
 const OrderList = r => require.ensure([], () => r(require('../views/order/orderList')), 'orderList');
+const OrderConfirm = r => require.ensure([], () => r(require('../views/orderConfirm/orderConfirm')), 'orderConfirm');
+const ChooseAddress = r => require.ensure([], () => r(require('../views/orderConfirm/children/chooseAddress')), 'chooseAddress');
 const ProDetail = r => require.ensure([], () => r(require('../views/product/productDetail')), 'ProDetail');
 export default new Router({
   routes: [
@@ -41,7 +43,19 @@ export default new Router({
       component: OrderList
     },
     {
-      path: '/productDetail/:id',
+      path: '/orderConfirm',
+      name: 'orderConfirm',
+      meta:'确认订单',
+      component: OrderConfirm,
+      children:[{
+        path: '/chooseAddress',
+        name: 'chooseAddress',
+        meta:'选择地址',
+        component: ChooseAddress
+      }]
+    },
+    {
+      path: '/productDetail',
       name: 'ProDetail',
       meta:'产品详情',
       component: ProDetail
