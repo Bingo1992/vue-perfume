@@ -40,7 +40,7 @@
                       </li>
                   </ul>
                   <div class="btn-pay" v-if="item1.status=='待付款'">
-                     <router-link class="btn-theme" :to="{path:'orderPay'}">去付款</router-link>
+                     <router-link class="btn-theme" :to="{path:'/orderPay'}">去付款</router-link>
                   </div>
                   <div class="btn-pay" v-if="item1.status=='待收货'">
                      <div class="btn-theme">确认收货</div>
@@ -74,7 +74,7 @@
                       </li>
                   </ul>
                   <div class="btn-pay">
-                     <router-link class="btn-theme" :to="{path:'orderPay'}">去付款</router-link>
+                     <router-link class="btn-theme" :to="{path:'/orderPay'}">去付款</router-link>
                   </div>
               </li>
           </ul>
@@ -116,8 +116,8 @@
 </template>
 
 <script>
-import FooterNav from '../../components/Footer'
-import {orderList} from '../../service/getData'
+import FooterNav from 'components/Footer'
+import {orderList} from 'service/getData'
 import {mapState} from 'vuex'
 export default {
   name: 'order',

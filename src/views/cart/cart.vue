@@ -2,12 +2,12 @@
   <div>
     <loading v-if="showLoading"></loading>
 
-  <!--   <div v-if="!userInfo" class="nothing">
+    <div v-if="!userInfo" class="nothing">
       <i class="bg-red icon-gantan"></i>
       <p>请<router-link class="font-blue lg-font" to="/login">登录</router-link>后查看更多信息</p>
-    </div> -->
+    </div>
     
-    <div v-if="!showLoading" class="cart banner">
+    <div v-if="!showLoading && userInfo" class="cart banner">
 
       <div v-if="!cartList || cartList.length == 0" class="nothing">
         <i class="icon-cart font-theme"></i>
@@ -18,7 +18,7 @@
           <li class="list-box" v-for="(cart,index) in cartList">
                 <label class="checkbox">
                     <!-- <input type="checkbox" name="checkbox" v-model="cart.checked"  @click="selectPro(cart)"> -->
-                    <input type="checkbox" name="checkbox" :value="cart.proID" v-model="checks"  @change="selectPro(cart,index)">
+                    <input type="checkbox" name="checkbox" :value="cart.check" v-model="cart.check"  @change="selectPro(cart.proID, cart.check)">
                     <i class="icon-hook"></i>
                 </label>
                 <img class="list-img" :src="cart.proImg">
@@ -28,16 +28,16 @@
                             <h4 class="nowrap">{{cart.proName}}</h4>
                             <p>已选择：{{cart.proAttr}}</p>
                         </div>
-                        <i class="delete icon-cancel" @click="showConfirmDialog(index)"></i>
+                        <i class="delete icon-cancel" @click="showConfirmDialog(cart.proID)"></i>
                     </div>
                     <div class="list-box">
                         <p class="list-info">价格：
                             <span class="font-theme">￥{{cart.proPrice}}</span>
                         </p>
                         <div class="amount">
-                            <span class="minus icon-minus" @touchstart="changeAmount(cart.proID, cart.proNum)"></span>
-                            <input type="number" class="count"  v-model.number="cart.proNum" @change="calcTotalMoney">
-                            <span class="plus icon-plus" @touchstart="changeAmount(cart.proID, cart.proNum)"></span>
+                            <span class="minus icon-minus" @touchstart="changeAmount(cart.proID, -1, cart.check)"></span>
+                            <input type="number" class="count"  v-model.number="cart.proNum" >
+                            <span class="plus icon-plus" @touchstart="changeAmount(cart.proID, 1, cart.check)"></span>
                         </div>
                     </div>
                 </div>
@@ -46,14 +46,14 @@
 
       <div v-if="cartList.length > 0" class="actionBar-container list-box border-top">
           <label class="all-check">
-              <input type="checkbox" value="false" v-model="checkAll" @change="selectAll()">
+              <input type="checkbox" :value="checkAllFlag" v-model="checkAllFlag" @change="selectAll(checkAll)">
               <i class="icon-hook"></i>
               全选
           </label>
           <div class="list-info pdl">
-              <span>合计：<span class="font-theme">￥{{total_price}}</span></span>
+              <span>合计：<span class="font-theme">￥{{calcTotalMoney}}</span></span>
           </div>
-          <router-link :class="[{ disbtn: checks.length==0 }, 'btn-theme']" to="/orderConfirm">立即购买</router-link>
+          <router-link :class="[{ disbtn: calcTotalMoney==0 }, 'btn-theme']" to="/orderConfirm">立即购买</router-link>
       </div>
     </div>
     <footer-nav></footer-nav>
@@ -64,10 +64,10 @@
 </template>
 
 <script>
-import loading from '../../components/loading'
-import FooterNav from '../../components/Footer'
-import confirmDialog from '../../components/confirmDialog'
-import {cartList,editCart} from '../../service/getData'
+import loading from 'components/loading'
+import FooterNav from 'components/Footer'
+import confirmDialog from 'components/confirmDialog'
+import {cartList,editCart,delCart,editCheckAll} from 'service/getData'
 import {mapState,mapMutations} from 'vuex'
 
 export default {
@@ -75,13 +75,12 @@ export default {
     return { 
       showLoading: true,
       // cartList: null,//购物车列表
-      total_price: 0,//合计
-      checkAll: false,//全选
+      // checkAll: true,//全选
       flag: true,
       showDialog: false,
       confirmTitle:'',
       confirmText:'',
-      currentIndex: -1,//点击的当前元素index
+      currentID: '',//点击的当前元素id
       checks:[],
       cartNum: 0//购物车数量
     }
@@ -95,14 +94,35 @@ export default {
   computed: {
     ...mapState([
         'userInfo','cartList'
-    ])
+    ]),
+    // 监控总价格
+    calcTotalMoney() {
+      return this._calcTotalMoney();
+    },
+     // 是否全选
+    checkAllFlag() {
+      return this.checkedCount === this.cartList.length;
+    },
+    // 勾选的数量
+    checkedCount(){
+      var i = 0;
+       this.cartList && this.cartList.forEach((item) => {
+          if(item.check) i++;    
+       });
+       return Number(i);
+       // if(i === this.cartList.length) {
+       //     this.checkAll = true;
+       // } else {
+       //    this.checkAll = false;
+       // }
+    }
+
   },
   methods: {
     ...mapMutations([
-        'INIT_BUYCART', 'EDIT_CART'
+        'INIT_BUYCART', 'EDIT_CART', 'DELETE_CART'
     ]),
     async initData() {
-      // this.showLoading = true;
       // if(this.userInfo){
       //    let res = await cartList();
       //    this.cartList = res.result.proList;
@@ -110,41 +130,36 @@ export default {
       // } else {
       //    this.showLoading = false;
       // }
-      this.INIT_BUYCART();
-      this.showLoading = false;
+      if(this.userInfo) {
+        this.INIT_BUYCART();
+        this.showLoading = false;
+      } else {
+         this.showLoading = false;
+      }
+       
     },
     // 修改购物车
-    _editCart(proID,proNum) {
-       editCart({proID, proNum}).then( res => {
-          this.EDIT_CART({proID,proNum});
+    _editCart(proID,type,check) {
+       editCart({proID}).then( res => {
+          this.EDIT_CART({proID, type,check});
        });
     },
     //修改数量
-    changeAmount(proID, proNum) {
+    changeAmount(proID, type, check) {
       // if(value > 0){
       //   cart.proNum++; 
       // }else if(cart.proNum > 1){
       //    cart.proNum--;
       // }  
-      this._editCart(proID, proNum);
-      this.calcTotalMoney();
+      this._editCart(proID, type, check);
+      // this.calcTotalMoney();
     },
     
     //勾选产品
-    selectPro(cart,index) {
-      // console.log(this.checks)
-      if(this.checks.length == this.cartList.length) {
-         this.checkAll = true;
-      }else {
-         this.checkAll = false;
-      }
-      //   if(typeof cart.checked === 'undefined'){
-      //     this.$set(cart,"checked",true);
-      //   }else {
-      //     cart.checked = !cart.checked; 
-      //   }
-      //   cart.checked = !cart.checked; 
-      this.calcTotalMoney();
+    selectPro(proID, check) {
+       this._editCart(proID, 0, check);
+       // this._isCheckAll();      
+       // this.calcTotalMoney();
       // this.flag = true;
       // this.cartList.forEach((elm) => {
       //   if(!elm.checked){
@@ -158,66 +173,76 @@ export default {
       // }   
            
     },
+
     //全选
     selectAll () {
-      //   this.checkAll = !this.checkAll;
-      this.cartList.forEach((cart,index) => {
-        if(this.checkAll){
-          this.checks[index] = cart.proID;
-        }else {
-          this.checks = [];
-        }
-        // if(typeof this.checks[index] == "undefined"){
-        //   this.$set(cart,"checked",this.checkAll);
-        // }else{
-        //   cart.checked = this.checkAll;
-        // }
+      // console.log(this.checkAll)
+      let checkAll = !this.checkAllFlag;
+      editCheckAll({checkAll: checkAll}).then(res => {
+        this.EDIT_CART({check: checkAll});
       })
-      this.calcTotalMoney();
+      // var i = 0;
+      //  this.cartList && this.cartList.forEach((item) => {
+      //     if(item.check === true) i++;
+      //  });
+      //  if(i == this.cartList.length) {
+      //      this.checkAll = true;
+      //  } else {
+      //     this.checkAll = false;
+      //  }
+
+      // this.calcTotalMoney();
          
     },
     //显示遮罩
-    showConfirmDialog(index) {
+    showConfirmDialog(id) {
       this.showDialog = true;
-      this.currentIndex = index;
-      // this.confirmTitle = "删除提示";
       this.confirmText = "确定删除该购物车吗？"
+      this.currentID = id;
     },
     //删除购物车
     confirmBtn() {
-      this.checks.forEach((check, index) => {
-          if(check === this.cartList[this.currentIndex].proID){
-            this.checks.splice(index,1);
-          }
-      });
-      this.cartList.splice(this.currentIndex,1);
-      this.calcTotalMoney();
-      // this.changeCartAmount();
+        delCart(this.currentID).then( res => {
+           this.DELETE_CART(this.currentID);
+         });
+
+       // this.cartList && this.cartList.forEach((item) => {
+          // if(item.proID === this.currentID){
+            // this.DELETE_CART({this.proID});
+          // }
+       // });
+      // this.checks.forEach((check, index) => {
+      //     if(check === this.cartList[this.currentIndex].proID){
+      //       this.checks.splice(index,1);
+      //     }
+      // });
+      // this.cartList.splice(this.currentIndex,1);
+      
+      // this.calcTotalMoney();
     },
     //关闭遮罩
     closeConfirmDialog() {
       this.showDialog = false;
     },
     //合计
-    calcTotalMoney() {
-      this.total_price = 0;
-      this.cartList.forEach((cart) => {
-        this.checks.forEach((check) => {
-          if(check === cart.proID) {
-              this.total_price += cart.proNum*cart.proPrice;
-          }
-        });
+    _calcTotalMoney() {
+      let total_price = 0;
+      
+      this.cartList && this.cartList.forEach((item,i) => {
+        if(item.check) {
+         total_price += item.proNum * item.proPrice;
+        }
       });
-      return this.total_price;
+      return total_price;
     },
   },
-  // watch: {
-  //   userInfo: function (value) {
-  //       if (value && !this.cartList) {
-  //           this.initData();
-  //       }
-  //   }
-  // }
+  watch: {
+    // userInfo: function (value) {
+    //     if (value && !this.cartList) {
+    //         this.initData();
+    //     }
+    // }
+  }
 }
 </script>
 

@@ -10,17 +10,17 @@
 			"attrTitle": "香味种类",
 			"attrSelect":[
 				{
-					"id":1,
+					"id":"48949",
 					"name":"薰衣草",
 					"active":false
 				},
 				{
-					"id":2,
+					"id":"98965",
 					"name":"玫瑰香",
 					"active":false
 				},
 				{
-					"id":3,
+					"id":"36284",
 					"name":"茉莉香",
 					"active":false
 				}

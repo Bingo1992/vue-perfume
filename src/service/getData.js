@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as zone from './data/PlaceJson'
 /**
  * 创建临时数据
  */
@@ -37,6 +38,7 @@ const getpromise = (type,url,data) => {
 	})
 };
 
+
 //开发环境
 if (process.env.NODE_ENV != 'development') {
 
@@ -63,15 +65,21 @@ else {
 	var orderList = () => getpromise('get','./static/json/orderList.json');
 
 	// 购物车
-	var cartList = () => getpromise('get','./static/json/cart.json');
+	var getCartList = () => getpromise('get','./static/json/cart.json');
 	var addCart = (params) => getpromise('post','./static/json/addCart.json',params);
 	var delCart = (params) => getpromise('post','./static/json/delCart.json',params);
 	var editCart = (params) => getpromise('post','./static/json/editCart.json',params);
-	var delAllCart = (params) => getpromise('post','./static/json/delAllCart.json',params);
+	
+	var editCheckAll = (params) => getpromise('post','./static/json/editCheckAll.json',params);
 
 	// 地址
 	var addAddress = (params) => getpromise('post','./static/json/addAddress.json',params);
 	var addressList = (params) => getpromise('post','./static/json/address.json',params);
+
+	// 省市区
+	var province = () => setpromise(zone.province);
+	var city = () => setpromise(zone.city);
+	var district = () => setpromise(zone.district);
 }
 	
-export{sendLogin,getUser,mobileCode,checkExsis,proList,proDetail,orderList,addAddress,addressList,cartList,addCart,delCart,editCart,delAllCart}
+export{sendLogin,getUser,mobileCode,checkExsis,proList,proDetail,orderList,addAddress,addressList,getCartList,addCart,delCart,editCart,editCheckAll,province,city,district}

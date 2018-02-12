@@ -23,9 +23,8 @@
 </template>
 
 <script>
-import loading from './loading'
-import {mapState} from 'vuex'
-import {proList} from '../service/getData'
+import loading from 'components/loading'
+import {proList} from 'service/getData'
 import axios from 'axios'
 export default {
 	data(){
@@ -54,6 +53,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/var.scss";
 
 </style>

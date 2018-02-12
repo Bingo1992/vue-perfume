@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import alertTip from '../../components/alertTip'
+import alertTip from 'components/alertTip'
 import {mapMutations,mapState} from 'vuex'
-import {mobileCode, checkExsis, sendLogin} from '../../service/getData'
+import {mobileCode, checkExsis, sendLogin} from 'service/getData'
 export default {
   name: 'login',
   data () {

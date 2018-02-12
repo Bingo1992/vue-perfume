@@ -37,7 +37,7 @@
                 <router-link class="backNav border-right" to="/cart">
                     <i class="icon-cart"></i>
                     <p>购物车</p>
-                    <span v-if="cartNum != 0" class="circlePoint">{{cartNum}}</span>
+                    <span v-if="cartNum != 0 && userInfo" class="circlePoint">{{cartNum}}</span>
                 </router-link>
                 <a class="btn-cart" @click="addCartBtn(proDetail.title,proDetail.image_url)">加入购物车</a>
                 <a class="btn-buy"  @click="gobuy">立即购买</a>
@@ -87,12 +87,12 @@
 </template>
 
 <script>
-import loading from '../../components/loading'
+import loading from 'components/loading'
 // import attrDialog from './attrDialog'
-import alertTip from '../../components/alertTip'
+import alertTip from 'components/alertTip'
 import {mapState,mapMutations} from 'vuex'
-import {proDetail,addCart} from '../../service/getData'
-
+import {proDetail,addCart} from 'service/getData'
+import { setStore } from 'utils/storage'
 export default {
 	data(){
 		return {
@@ -108,6 +108,7 @@ export default {
             amount: 1,//添加的数量
             price: 0,//属性选中的价格
             skuId: '',//选择的商品id
+            idArray: [],
             cartAmount: 0,
             btnType: 0//判断按钮类型,0为选则属性，1为加入购物车，2为购买
 		}
@@ -150,53 +151,41 @@ export default {
         //点击加入购物车按钮
         addCartBtn(name,img) {
             this.btnType = 1; 
-
-            // if(!this.userInfo){//未登录
-            //     this.ADD_CART({
-            //       proID: id,
-            //       proPrice: price,
-            //       proName: name,
-            //       proImg: img,
-            //       proAttr:attr,
-            //       proNum: this.amount
-            //     })
-            // }else {
-            //     this.showAttrDialog = true;  
-            // }
-            if(this.attrLen === this.getActiveNum()) {
-                this._confirmAddCart(name,img);
-                // console.log(this.cartList)
-            }else {
+            if(!this.userInfo) {
+                this.$router.push('/login');
+             }else {
                 this.showAttrDialog = true;
             }
         },
 
         // 确定加入购物车
         _confirmAddCart(name,img){
-             // this.btnType = 1;
+
              this.showHideAlert('已成功加入购物车');
-             if(!this.userInfo){//未登录
-                this.ADD_CART({  
-                  proID: this.skuId,
-                  proPrice: this.price,
-                  proName: name,
-                  proImg: img,
-                  proAttr: this.attrName,
-                  proNum: this.amount
-                })
-             } else {
+             // if(!this.userInfo){//未登录
+             //    this.ADD_CART({  
+             //      proID: this.skuId,
+             //      proPrice: this.price,
+             //      proName: name,
+             //      proImg: img,
+             //      proAttr: this.attrName,
+             //      proNum: this.amount,
+             //      check: true
+             //    })
+             // } else {
                 addCart({proID: this.skuId, proNum: this.amount}).then( res => {
                     this.ADD_CART({
                       proID: this.skuId,
-                      proPrice: price,
+                      proPrice: this.price,
                       proName: name,
                       proImg: img,
                       proAttr: this.attrName,
-                      proNum: this.amount
+                      proNum: this.amount,
+                      check: true
                     })
                 })
-             }
-             this.skuId = '';//置空已选商品ID
+             // }
+             this.idArray = [];
         },
         //购买按钮
         gobuy() {
@@ -204,8 +193,6 @@ export default {
             if(!this.userInfo){
                 // this.showHideAlert('请先登录');
                 this.$router.push('/login');
-            }else if(this.attrLen === this.getActiveNum()) {
-                this.linktobuy();
             }else {
                 this.showAttrDialog = true;
             }
@@ -221,7 +208,9 @@ export default {
                             }
                             attrSelect.active = true;
                             this.attrArray[i] = attrSelect.name;//获取选中的属性名称
-                            this.skuId += attrSelect.id; 
+                            this.idArray.push(attrSelect.id);
+                            this.skuId = this.idArray.join("");
+                            // this.skuId += attrSelect.id; 
                         }else {
                             attrSelect.active = false;
                         }
@@ -234,18 +223,17 @@ export default {
             if(this.attrLen === this.getActiveNum() && this.amount != '') {
                 this.closeDialog();
                 this.attrName = '已选择：' + this.attrArray.join("，");
+               
                 switch (this.btnType) {
-                    // case 0: 
-                        // this.closeDialog();
-                        // break;
+                    case 0: 
+                        break;
                     case 1:
-                         this._confirmAddCart(name,img);   
+                         this._confirmAddCart(name,img); 
                          break;
                     case 2:
-                        this.linktobuy(id);
+                        this.linktobuy(name,img);
                         break;
                 }
-                   
             }else if(this.attrLen > this.getActiveNum()){
                 this.showHideAlert('还有未选项');
             }else {
@@ -288,9 +276,20 @@ export default {
             }, 1000);
         },
         //跳转到订单确认页面
-        linktobuy(skuId){
-            this.$router.push({path:'/orderConfirm',query:{skuId:this.skuId,amount: this.amount}});
-            this.skuId = '';
+        linktobuy(name,img){
+            var goods = [];
+            goods.push({
+                proID: this.skuId,
+                proNum: this.amount,
+                proPrice: this.price,
+                proName: name,
+                proImg: img,
+                proAttr: this.attrArray.join("，"),
+                check: true
+            })
+            setStore('buyPro',goods);
+            this.$router.push({path:'/orderConfirm',query:{skuId:this.skuId}});
+            // this.skuId = '';
         }
 	},
     watch:{

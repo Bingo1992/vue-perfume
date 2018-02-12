@@ -10,7 +10,7 @@
       <router-link to="/cart">
         <i class="icon-cart"></i>
         <p>购物车</p>
-        <span v-if="cartNum!=0" class="circlePoint">{{cartNum}}</span>
+        <span v-if="cartNum && cartNum!=0" class="circlePoint">{{cartNum}}</span>
       </router-link>
     </li>
     <li>
@@ -31,8 +31,9 @@
 
 
 <script>
-import {mapState} from 'vuex'
-
+import {mapState, mapMutations} from 'vuex'
+import {getCartList} from 'service/getData'
+import { setStore, removeStore } from 'utils/storage'
 export default {
   name: 'nav-bar',
   data () {
@@ -42,26 +43,35 @@ export default {
   },
   // props: ['cartAmount'],
   computed: {
-    ...mapState([
-        'userInfo','cartList'
-    ]),
+    ...mapState(['userInfo','cartList']),
     cartNum () {
       let cartNum = 0;
-      this.cartList && this.cartList.forEach( item => {
-         cartNum += item.proNum;
-      })
-      return cartNum;
-    }
+      if(this.userInfo) {
+       
+        this.cartList && this.cartList.forEach( item => {
+           cartNum += item.proNum;
+        })
+        return cartNum;
+      }
+    } 
   },
-
-  // methods:{
-  //   async initData() {
-  //     if(this.userInfo){
-  //       let res = await cartList();
-  //       this.cartAmount = res.result.cartAmount;
-  //     }
-  //   }
-  // },
+  mounted() {
+     if(this.userInfo){
+      this._getCartList();
+     }else {
+      this.INIT_BUYCART();
+     }
+  },
+  methods:{
+    ...mapMutations(['INIT_BUYCART', 'EDIT_CART']),
+    // 登陆时获取一次购物车商品
+    _getCartList () {
+      getCartList().then(res => {
+        setStore('buyCart', res.result);
+        // 重新初始化一次本地数据
+      }).then(this.INIT_BUYCART);
+    },
+  }
   // watch: {
   //   userInfo: function (value) {
   //       if (value) {

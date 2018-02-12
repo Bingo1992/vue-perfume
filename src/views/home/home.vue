@@ -10,15 +10,15 @@
 
 <script>
 
-import Banner from '../../components/bannerPic'
-import FooterNav from '../../components/Footer'
-import ProList from '../../components/productList'
+import Banner from 'components/bannerPic'
+import FooterNav from 'components/Footer'
+import ProList from 'components/productList'
 // import Slide from '../../components/slide.vue'
 // import ContentA from '../../components/content.vue'
 
-import a from '../../assets/images/banner.jpg'
-import b from '../../assets/images/banner.jpg'
-import c from '../../assets/images/banner.jpg'
+import a from 'assets/images/banner.jpg'
+import b from 'assets/images/banner.jpg'
+import c from 'assets/images/banner.jpg'
 
 export default {
   name: 'container',

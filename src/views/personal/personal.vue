@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import FooterNav from '../../components/Footer'
-import src from "../../assets/images/pic.png";
+import FooterNav from 'components/Footer'
+import src from "assets/images/pic.png";
 import {mapState} from 'vuex'
 export default {
   name: 'personal',
