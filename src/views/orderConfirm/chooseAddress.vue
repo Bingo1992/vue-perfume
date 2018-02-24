@@ -8,7 +8,7 @@
         <ul class="address-list border-list">
             <li class="list-box" v-for="(item,i) in address" :key="item.addID">
                 <label class="checkbox">
-                    <input type="radio" name="address" v-model="item.userDefault" :value="item.userDefault" @click="">
+                    <input type="radio" name="address" v-model="item.userDefault" :value="item.userDefault">
                     <i class="icon-hook"></i>
                 </label>
                 <div class="list-info">

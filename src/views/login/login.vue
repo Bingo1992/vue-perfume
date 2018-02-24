@@ -26,7 +26,7 @@
         
     </form>
 
-    <alert-tip v-show="showAlertTip" :alertText="alertText"></alert-tip>
+    <alert-tip v-if="showAlertTip" :alertText="alertText"></alert-tip>
    
   </div> 
 </template>

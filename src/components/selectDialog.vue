@@ -2,28 +2,29 @@
 　 <div class="slideDialog">
         <!-- 选择城市遮罩 -->
         <div :class="['Procity-list', 'dialog-list', {'more-wp-open':openCity}]">
-            <a class="return-back border-bottom">
+            <a class="return-back border-bottom" @click="closeDialog">
                 <i class="icon-left"></i>
                 <h4>选择城市</h4>
             </a>
             <ul class="selProvince dialog-start-list">
-                <li v-for="item in province" :key="item.ProID" @click="getCity(item.ProID)">{{item.ProName}}</li>
+                <li v-for="item in province" :key="item.ProID" @click="getCity(item.ProID,item.ProName)">{{item.ProName}}</li>
             </ul>
             <ul class="selCity dialog-end-list">
-                <li v-for="item in city" :key="item.CityID" @click="getDistrict(item.CityID)">{{item.CityName}}</li>
+                <li v-for="item in city" :key="item.CityID" @click="getDistrict(item.CityID,item.CityName)">{{item.CityName}}</li>
             </ul>
         </div>
 
         <!-- 选择区县遮罩 -->
         <div :class="['zone-list', 'dialog-list', {'more-wp-open':openDis}]">
-            <a class="return-back border-bottom">
+            <a class="return-back border-bottom" @click="closeDialog">
                 <i class="icon-left"></i>
                 <h4>选择地区</h4>
             </a>
             <ul class="selDistrict dialog-end-list whole-list">
-                <li v-for="item in district" :key="item.CityID" @click="getDisName">{{item.DisName}}</li>
+                <li v-for="item in zone" :key="item.CityID" @click="getDisName(item.DisName)">{{item.DisName}}</li>
             </ul>
-        </div>    
+        </div>   
+
 　 </div>
 </template>
 <script>
@@ -34,10 +35,12 @@ export default {
 　　  return {
         province:[],
         city:[],
-        district:[]
+        zone:[],
+        cityName: '',
+        disName:''
 　　  }
 　  },
-	props: ['openCity','openDis','cityName','disName'],
+	props: ['openCity','openDis'],
     mounted() {
         this.getProvince();
     },
@@ -47,7 +50,8 @@ export default {
             this.province = await province();
         },
         // 获取城市
-        async getCity(proID) {
+        async getCity(proID, name) {
+            this.cityName = name;
             let allCity = await city();
             let cityArr = [];
             allCity.forEach((item) => {
@@ -56,9 +60,13 @@ export default {
                 }
             });
             this.city = cityArr;
+
         },
         // 获取地区
-        async getDistrict(cityID) {
+        async getDistrict(cityID,name) {
+            if(this.cityName != name){
+                this.cityName += name;
+            }
             let allDistict = await district();
             let disArr = [];
             allDistict.forEach((item) => {
@@ -66,13 +74,18 @@ export default {
                     disArr.push(item);
                 }
             });
-            this.district = disArr;
-            this.openCity = false;
-
+            this.zone = disArr;
+            this.$emit('closeDialog');
+            this.$emit('cityName',this.cityName);
+            this.$emit('disName','');//置空区县
         },
-        getDisName() {
-            this.openDis = false;
-            // this.openCity = false;
+        closeDialog() {
+            this.$emit('closeDialog');
+        },
+        getDisName(name){
+            this.disName = name;
+            this.$emit('disName',this.disName);
+            this.$emit('closeDialog');
         }
     }
 
