@@ -108,7 +108,10 @@ export default {
     border-top: 1px solid $border-color;
   }
 }
-.router-link-active p,.router-link-active i{
+.nav-bar .router-link-active{
+  p, i{
     color: $color-theme;
-  } 
+  }
+}
+   
 </style>

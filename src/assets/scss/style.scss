@@ -194,8 +194,8 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left{
         background-color: $border-color;
         position: relative;
         z-index: 2;
-        display: block;
-        float: left;
+        display: inline-block;
+        vertical-align: middle;
         margin-right: 6px;
         &:checked{
             background-color: transparent;

@@ -3,7 +3,7 @@
 	"address_detail":"广州市天河区天府路107号",
 	"mobile":"13681711251",
 	"name":"黄先生",
-	"userDefault":true
+	"userDefault":false
 },{
 	"addID":12345012,
 	"address_detail":"广州市天河区天府路207号",
@@ -15,7 +15,7 @@
 	"address_detail":"广州市天河区天府路307号",
 	"mobile":"13681711253",
 	"name":"李先生",
-	"userDefault":false
+	"userDefault":true
 },{
 	"addID":12345014,
 	"address_detail":"广州市天河区天府路407号",

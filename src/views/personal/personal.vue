@@ -15,7 +15,7 @@
     <!-- 列表 -->
     <ul class="border-list">
         <li>
-            <router-link class="list-box" to="/order">
+            <router-link class="list-box" :to="userInfo? '/order' : '/login'">
                 <i class="icon-order"></i>
                 <span class="list-info">
                     <h4>我的订单</h4>
@@ -24,26 +24,29 @@
             </router-link>
         </li>
         <li>
-            <a class="list-box" href="#">
+            <router-link class="list-box"  :to="userInfo? '/addressManage': '/login'">
                 <i class="icon-set"></i>
                 <span class="list-info">
                     <h4>地址管理</h4>
                 </span>
                 <i class="icon-right"></i>
-            </a>
+            </router-link>
         </li>
         <li>
-            <a class="list-box" href="#">
+            <router-link class="list-box" to="/">
                 <i class="icon-help"></i>
                 <span class="list-info">
                     <h4>帮助中心</h4>
                 </span>
                 <i class="icon-right"></i>
-            </a>
+            </router-link>
         </li>
     </ul>
-     
+     <div class="address">
+      <router-view></router-view>
+    </div>
     <footer-nav></footer-nav>
+    
   </div> 
 </template>
 
@@ -64,10 +67,7 @@ export default {
   computed: {
     ...mapState([
         'userInfo'
-    ]),
-    imgpath() {
-
-    }
+    ])
   }
 }
 </script>

@@ -73,8 +73,10 @@ else {
 	var editCheckAll = (params) => getpromise('post','./static/json/editCheckAll.json',params);
 
 	// 地址
-	var addAddress = (params) => getpromise('post','./static/json/addAddress.json',params);
 	var addressList = (params) => getpromise('post','./static/json/address.json',params);
+	var addAddress = (params) => getpromise('post','./static/json/addAddress.json',params);
+	var delAddress = (params) => getpromise('post','./static/json/delAddress.json',params);
+	var updateAddress = (params) => getpromise('post','./static/json/updateAddress.json',params);
 
 	// 省市区
 	var province = () => setpromise(zone.province);
