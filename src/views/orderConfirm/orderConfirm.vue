@@ -1,17 +1,17 @@
 <template>
-  <div class="orderConfirm">
+  <div class="orderConfirm banner">
     <loading v-if="showLoading"></loading>
 
     <section v-if="!showLoading">
         <div class="logistics bg-show">   
             <router-link to="/chooseAddress" class="list-box">
-                <div class="list-info" v-if="!chooseAddress">请添加一个收获地址</div>
+                <div class="list-info" v-if="!choosedAddress">请添加一个收获地址</div>
                 <div v-else class="list-info">
                     <h4>
-                        <span class="pdr">{{chooseAddress.name}}</span>
-                        <span>{{chooseAddress.mobile}}</span>
+                        <span class="pdr">{{choosedAddress.name}}</span>
+                        <span>{{choosedAddress.mobile}}</span>
                     </h4>
-                    <p class="gray-font nowrap">{{chooseAddress.address_detail}}</p>
+                    <p class="gray-font nowrap">{{choosedAddress.address_detail}}</p>
                 </div>  
                 <i class="icon-right"></i>
             </router-link>
@@ -75,7 +75,6 @@
       data () {
         return {
             showLoading: false, //显示加载中  
-            chooseAddress: null,
             cartList:[],
             proId: '',
             num:''
@@ -85,10 +84,10 @@
         loading
       }, 
       mounted() {
-         this._getAddress();
          this._initData();
       },
       computed: {
+          ...mapState(['choosedAddress']),
           // 选中的总价格
           checkPrice () {
             let totalPrice = 0
@@ -101,17 +100,7 @@
          }
       },
       methods: {
-        // 获取地址
-        async _getAddress() {
-            let address = await addressList();
-            if(address.length > 0){
-                address.forEach((ads, index) => {
-                    if(ads.userDefault){
-                        this.chooseAddress = ads;
-                    }
-                });
-            }
-        },
+       ...mapMutations(['CHOOSE_ADDRESS']),
         //获取商品数据
         _initData() {
             if (this.$route.query.skuId) {
@@ -121,6 +110,18 @@
                 // 测试环境使用
                 this.cartList = JSON.parse(getStore('buyCart'));
             }
+             this._initAddress();
+        },
+         // 获取地址
+        async _initAddress() {
+            let address = await addressList();
+            if(address.length > 0){
+                address.forEach((ads, index) => {
+                    if(ads.userDefault){
+                        this.CHOOSE_ADDRESS(ads);
+                    }
+                });
+            }
         },
         // 购物车数据
         _getCartList () {
@@ -129,20 +130,16 @@
               this.cartList = res.result
             })
         },
+
       },
       watch: {
-        '$route':'_initData'
+        userInfo: function (value) {
+            if (value && value.user_id) {
+                this._initAddress();
+            }
+        }
       }
-      // created() {
-      //     if (this.$route.query.skuId) {
-      //       this.cartList = JSON.parse(getStore('buyPro'));
-      //     } else {
-      //       // this._getCartList();
-      //       // 测试环境使用
-      //       this.cartList = JSON.parse(getStore('buyCart'));
-      //     }
-      // }
-      
+     
     }
 </script>
 

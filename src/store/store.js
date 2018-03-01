@@ -11,7 +11,9 @@ const state = {
 	items: [],　// items为元素列表,
 	login: false,
 	userInfo: null, //用户信息
-	cartList: [] //购物车
+	cartList: [], //购物车
+	choosedAddress: null,//选择地址
+	addressIndex: null,//选择地址的索引值
 }
 
 export default new Vuex.Store({

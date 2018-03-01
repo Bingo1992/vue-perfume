@@ -1,4 +1,4 @@
-[{
+export const address = [{
 	"addID":12345011,
 	"address_detail":"广东省广州市 天河区 天府路107号",
 	"mobile":"13681711251",
@@ -22,4 +22,8 @@
 	"mobile":"13681711254",
 	"name":"孟小姐",
 	"userDefault":false
-}]
+}];
+
+export const delAddress = {};
+export const addAddress = {};
+export const updateAddress = {};

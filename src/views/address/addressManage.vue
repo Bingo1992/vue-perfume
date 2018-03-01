@@ -12,15 +12,18 @@
                     <p>{{item.address_detail}}</p>
                 </div>
                 <div class="list-box">
-                    <label class="checkbox list-info" :for="'address'+i">
-                        <input type="radio" :id="'address'+i" :value="i" v-model="defaultIndex">
-                        <i class="icon-hook"></i> 
-                        <span> {{defaultIndex == i? '默认地址':'设为默认'}}</span> 
-                    </label>
-             
+                    <div class="list-info">
+                       <label class="checkbox">
+                          <input type="radio" :value="i" v-model="defaultIndex" @change="changeDefault(item,i)">
+                          <i class="icon-hook"></i> 
+                          <span> {{defaultIndex == i? '默认地址':'设为默认'}}</span> 
+                      </label>
+               
+                    </div>
+                     
                     <div class="new-addr-btn">
-                        <span class="font-gray pdr"><i class="icon-delete"></i></span>
-                        <router-link class="font-gray pdl" to="/aaddAddress"><i class="icon-edit"></i></router-link>
+                        <span class="font-gray pdr"  @click="showConfirmDialog(item.addID)"><i class="icon-delete"></i></span>
+                        <router-link class="font-gray pdl" :to="{path:'/addressManage/addAddress',query:{addressId:item.addID}}"><i class="icon-edit"></i></router-link>
                     </div>
                 </div>
             </li>
@@ -32,28 +35,37 @@
         </div>
          
         <div class="btn">
-          <router-link class="btn-theme" to="/addAddress">+新增地址</router-link>
+          <router-link class="btn-theme" to="/addressManage/addAddress">+新增地址</router-link>
         </div>
     </section>
-    
+    <confirm-dialog v-if="showDialog" :confirm-text="confirmText" showBtn="true" @closeConfirmDialog="closeConfirmDialog" @confirmBtn="delAddress"></confirm-dialog>
+
+    <transition name="router-slid" mode="out-in">
+        <router-view></router-view>
+    </transition>  
   </div> 
 </template>
 
 <script>
     import {mapState, mapMutations} from 'vuex'
     import loading from 'components/loading'
-    import {addressList} from 'service/getData'
+    import {addressList,delAddress,updateAddress} from 'service/getData'
+    import confirmDialog from 'components/confirmDialog'
     export default {
       name: 'chooseAddress',
       data () {
         return {
             showLoading: true, //显示加载中  
             address:[],
+            showDialog: false,
+            confirmTitle:'',
+            confirmText:'',
+            currentID:'',
             defaultIndex: 0
         }
       },
       components: {
-        loading
+        loading, confirmDialog
       }, 
       mounted() {
        this.getAddress();
@@ -70,7 +82,30 @@
                 }
             });
         },
-
+        //删除地址
+        delAddress() {
+            delAddress(this.currentID).then(res => {
+              this.address.forEach((elm, index) => {
+                 if(elm.addID === this.currentID) {
+                    this.address.splice(index,1);
+                 }
+              });
+            });
+        },
+        // 修改默认地址
+        changeDefault(item,i) {
+         
+        },
+        //显示遮罩
+        showConfirmDialog(id) {
+          this.showDialog = true;
+          this.confirmText = "确定删除该地址吗？";
+          this.currentID = id;
+        },
+        //关闭遮罩
+        closeConfirmDialog() {
+          this.showDialog = false;
+        },
        
       }
   
@@ -79,5 +114,11 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-
+.router-slid-enter-active, .router-slid-leave-active {
+    transition: all .4s;
+}
+.router-slid-enter, .router-slid-leave-active {
+    transform: translate3d(2rem, 0, 0);
+    opacity: 0;
+}
 </style>

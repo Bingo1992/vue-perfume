@@ -7,8 +7,9 @@ const Cart = r => require.ensure([], () => r(require('views/cart/cart')), 'cart'
 const Personal = r => require.ensure([], () => r(require('views/personal/personal')), 'personal');
 const OrderList = r => require.ensure([], () => r(require('views/order/orderList')), 'orderList');
 const OrderConfirm = r => require.ensure([], () => r(require('views/orderConfirm/orderConfirm')), 'orderConfirm');
+const OrderPay = r => require.ensure([], () => r(require('views/orderConfirm/orderPay')), 'orderPay');
 const ChooseAddress = r => require.ensure([], () => r(require('views/address/chooseAddress')), 'chooseAddress');
-const AddAddress = r => require.ensure([], () => r(require('views/address/addAddress')), 'addAddress');
+const AddAddress = r => require.ensure([], () => r(require('views/address/children/addAddress')), 'addAddress');
 const AddressManage = r => require.ensure([], () => r(require('views/address/addressManage')), 'addressManage');
 const ProDetail = r => require.ensure([], () => r(require('views/product/productDetail')), 'proDetail');
 
@@ -35,14 +36,24 @@ export default new Router({
       component: Personal
     },
     {
-      path: '/addressManage',
-      meta:'地址管理',
-      component: AddressManage
-    },
-    {
-        path: '/addAddress',
+      path: '/chooseAddress',
+      meta:'选择地址',
+      component: ChooseAddress,
+      children:[{
+        path: 'addAddress',
         meta:'添加地址',
         component: AddAddress,
+      }] 
+    },
+    {
+      path: '/addressManage',
+      meta:'地址管理',
+      component: AddressManage,
+      children:[{
+        path: 'addAddress',
+        meta:'添加地址',
+        component: AddAddress,
+      }]
     },
     {
       path: '/order',
@@ -55,10 +66,9 @@ export default new Router({
       component: OrderConfirm
     },
     {
-      path: '/chooseAddress',
-      meta:'选择地址',
-      component: ChooseAddress,
-       
+      path: '/orderPay',
+      meta:'订单支付',
+      component: OrderPay
     },
     {
       path: '/productDetail',

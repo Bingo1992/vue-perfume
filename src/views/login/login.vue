@@ -107,7 +107,7 @@ export default {
         }
         //手机号登录
         this.arr = await sendLogin(this.mobileCode,this.mobileNum,this.validate_token);   
-        this.userInfo = this.arr[0]; 
+        this.userInfo = this.arr; 
                                  
         // this.CART_AMOUNT(this.userInfo.cartAmount)
        

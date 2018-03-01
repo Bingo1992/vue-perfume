@@ -107,7 +107,12 @@ export default {　
    state.cartList = cart;
     // 存入localStorage
     setStore('buyCart', state.cartList);
-  }
+  },
+  //选择的地址
+  ['CHOOSE_ADDRESS'](state, address) {
+    state.choosedAddress = address;
+ 
+  },
   //获取用户信息存入vuex
   // ['GET_USERINFO'](state, info) {
   // 	if (state.userInfo && (state.userInfo.username !== info.username)) {

@@ -67,15 +67,15 @@
 import loading from 'components/loading'
 import FooterNav from 'components/Footer'
 import confirmDialog from 'components/confirmDialog'
-import {cartList,editCart,delCart,editCheckAll} from 'service/getData'
+import {getCartList,editCart,delCart,editCheckAll} from 'service/getData'
+  import { setStore } from 'utils/storage'
 import {mapState,mapMutations} from 'vuex'
 
 export default {
   data () {
     return { 
       showLoading: true,
-      // cartList: null,//购物车列表
-      // checkAll: true,//全选
+      checkAll: true,//全选
       flag: true,
       showDialog: false,
       confirmTitle:'',
@@ -122,7 +122,7 @@ export default {
     ...mapMutations([
         'INIT_BUYCART', 'EDIT_CART', 'DELETE_CART'
     ]),
-    async initData() {
+    initData() {
       // if(this.userInfo){
       //    let res = await cartList();
       //    this.cartList = res.result.proList;
@@ -131,7 +131,13 @@ export default {
       //    this.showLoading = false;
       // }
       if(this.userInfo) {
-        this.INIT_BUYCART();
+        getCartList().then(res => {
+          if(res.status === "1"){
+            setStore('buyCart', res.result);
+          }
+          // 重新初始化一次本地数据
+        }).then(this.INIT_BUYCART);
+        // this.INIT_BUYCART();
         this.showLoading = false;
       } else {
          this.showLoading = false;
@@ -237,8 +243,9 @@ export default {
     },
   },
   watch: {
+    'userInfo':'initData'
     // userInfo: function (value) {
-    //     if (value && !this.cartList) {
+    //     if (value && userInfo.user_id) {
     //         this.initData();
     //     }
     // }
@@ -253,14 +260,14 @@ export default {
   margin-bottom: 120px;
 }
   
-.nothing {
-    @include box;
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    top: -26px;
-    .icon-cart {font-size: 46px;}
-}
+// .nothing {
+//     @include box;
+//     height: 100%;
+//     position: absolute;
+//     width: 100%;
+//     top: -26px;
+//     .icon-cart {font-size: 46px;}
+// }
 
 .cart-list {
     .list-info .list-box {
