@@ -306,7 +306,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../assets/scss/var.scss";
 
 .right-btn {
@@ -342,8 +342,8 @@ export default {
     padding-bottom: 60px;
 }
 .backNav {
+    flex-direction: column;
     background-color: #fff;
-    -webkit-box-orient: vertical;
     i{
         color: $color-theme;
         padding-top: 4px;

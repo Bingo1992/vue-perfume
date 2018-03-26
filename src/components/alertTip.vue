@@ -8,7 +8,7 @@
 <script>
 
 export default {
-   name : 'content',
+   name : 'tipDialog',
    data() {
 　　  return {
 　　  }

@@ -30,10 +30,7 @@
     margin-top: 60px;
     margin-bottom: 80px;
 }
-// .banner-t {margin-top: 60px;}
-// .banner-tt {margin-top: 102px;}
-// .banner-tb {margin-top: 60px;margin-bottom:160px; }
-// .banner-ttb {margin-top: 102px;margin-bottom:80px; }
+ 
 .getmore {
     padding-bottom: $bgMargin;
     text-align: center;
@@ -41,12 +38,6 @@
     font-size: $md-font;
 }
 
-// %fixed-layout {
-//     position:fixed;
-//     left:0;
-//     width: 100%;
-//     z-index: 5; 
-// }
 .btn {
     padding: $bgMargin;
 }
@@ -320,11 +311,7 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left {
     display:-webkit-box;
     -webkit-box-orient:horizontal;
     -webkit-box-align: center;
-    // li{
-    //     -webkit-box-flex:1;
-    //     width: 100%;    
-    //     text-align: center;
-    // }
+  
     li {
         padding: 10px 0;
         display: -webkit-box;
@@ -337,19 +324,9 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left {
         position: relative;
     }
 
-    // a{
-        // display: -webkit-box;
-        // display: block;
-        // -webkit-box-flex:1;
-        // width: 100%; 
-        // margin: 5px 0;
-        // position: relative;
-    // }
-
     i[class*='bg-']{
         color: #fff;
         @include circle(2.2rem);   
-        // display: inline-block;
         margin-bottom: .2rem;
         font-size: 1.3rem;
     }
@@ -382,9 +359,6 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left {
     }
     i{
         color: $color-theme;
-        // @include circle(2.5rem);   
-        // display: inline-block;
-        // margin-bottom: .2rem;
         font-size: 1.4rem;
     }
     p {line-height: 1.4rem;}
@@ -405,7 +379,6 @@ i.icon-right,i.icon-up,i.icon-down,i.icon-left {
         font-size: 60px;
        
     }
-    // p {text-align: left;}
 }
 .nothing,.result {
     img {margin: 0 auto;}
@@ -465,12 +438,17 @@ li.vcode-box{
 }
 
 .two-btn {
-    display: -webkit-box;
+    // display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
     a {
-        -webkit-box-flex:1;
-        display: -webkit-box;
-        -webkit-box-align: center;
-        -webkit-box-pack: center;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex: 1;
+        flex: 1;
+        justify-content: center;
+        align-items:center;
         // margin: 0 10px;
     }
 }

@@ -34,7 +34,7 @@
 <script>
 import alertTip from 'components/alertTip'
 import {mapMutations,mapState} from 'vuex'
-import {mobileCode, checkExsis, sendLogin} from 'service/getData'
+import {checkExsis, sendLogin} from 'service/getData'
 export default {
   name: 'login',
   data () {
@@ -54,7 +54,7 @@ export default {
   computed: {
     //判断手机号码
     rightMobile() {
-        return  /^(13[0-9]|15[0-9]|18[0-9])\d{8}$/.test(this.mobileNum)
+        return  /^(13[0-9]|15[0-9]|18[0,5-9]|14[5|7])\d{8}$/.test(this.mobileNum)
      },
      //判断验证码
     rightCode() {

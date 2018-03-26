@@ -98,19 +98,20 @@
             })
             return totalPrice;
          }
+
       },
       methods: {
        ...mapMutations(['CHOOSE_ADDRESS']),
         //获取商品数据
-        _initData() {
-            if (this.$route.query.skuId) {
+        _initData() { 
+           if (this.$route.query.skuId) {
                 this.cartList = JSON.parse(getStore('buyPro'));
             } else {
                 // this._getCartList();
                 // 测试环境使用
                 this.cartList = JSON.parse(getStore('buyCart'));
             }
-             this._initAddress();
+            this._initAddress();    
         },
          // 获取地址
         async _initAddress() {
@@ -133,11 +134,7 @@
 
       },
       watch: {
-        userInfo: function (value) {
-            if (value && value.user_id) {
-                this._initAddress();
-            }
-        }
+        '$route':'_initData'
       }
      
     }

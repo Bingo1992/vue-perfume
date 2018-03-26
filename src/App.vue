@@ -83,6 +83,6 @@ h1{font-size: 20px;}
     display: block;
     clear: both;
     height: 0;
-    overflow: hidden;
+    visibility: hidden;
 }
 </style>

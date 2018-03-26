@@ -46,7 +46,7 @@
 
       <div v-if="cartList.length > 0" class="actionBar-container list-box border-top">
           <label class="all-check">
-              <input type="checkbox" :value="checkAllFlag" v-model="checkAllFlag" @change="selectAll(checkAll)">
+              <input type="checkbox" :value="checkAllFlag" v-model="isCheckAll" @change="selectAll()">
               <i class="icon-hook"></i>
               全选
           </label>
@@ -68,14 +68,14 @@ import loading from 'components/loading'
 import FooterNav from 'components/Footer'
 import confirmDialog from 'components/confirmDialog'
 import {getCartList,editCart,delCart,editCheckAll} from 'service/getData'
-  import { setStore } from 'utils/storage'
+import { setStore } from 'utils/storage'
 import {mapState,mapMutations} from 'vuex'
 
 export default {
   data () {
     return { 
       showLoading: true,
-      checkAll: true,//全选
+      isCheckAll: true,//全选
       flag: true,
       showDialog: false,
       confirmTitle:'',
@@ -101,7 +101,12 @@ export default {
     },
      // 是否全选
     checkAllFlag() {
-      return this.checkedCount === this.cartList.length;
+      if(this.checkedCount === this.cartList.length) {
+        this.isCheckAll = true;
+      } else {
+        this.isCheckAll = false;
+      }
+      return this.isCheckAll;
     },
     // 勾选的数量
     checkedCount(){
@@ -110,11 +115,6 @@ export default {
           if(item.check) i++;    
        });
        return Number(i);
-       // if(i === this.cartList.length) {
-       //     this.checkAll = true;
-       // } else {
-       //    this.checkAll = false;
-       // }
     }
 
   },

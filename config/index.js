@@ -23,13 +23,13 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: 8081,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
         '/api': {
-           target: 'http://3.fdproject.applinzi.com',
+           target: 'http://localhost:3000',
            changeOrigin: true,
            pathRewrite: {
              '^/api': ''

@@ -25,7 +25,7 @@
 <script>
 import loading from 'components/loading'
 import {proList} from 'service/getData'
-import axios from 'axios'
+
 export default {
 	data(){
 		return {

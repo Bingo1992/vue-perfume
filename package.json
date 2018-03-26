@@ -7,9 +7,12 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "mock": "json-server --watch mock/mock.js --m mock/post-to-get.js",
+    "mockdev": "npm run mock | npm run dev"
   },
   "dependencies": {
+    "faker": "^4.1.0",
     "fs": "^0.0.1-security",
     "loading": "^1.13.3",
     "swiper": "^3.4.2",

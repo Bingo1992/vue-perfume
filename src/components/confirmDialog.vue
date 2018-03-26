@@ -16,7 +16,7 @@
 <script>
 
 export default {
-   name : 'content',
+   name : 'uiDialog',
    data() {
 　　  return {
        

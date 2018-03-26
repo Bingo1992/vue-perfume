@@ -19,66 +19,80 @@ export default new Router({
     {
      //地址为空时跳转home页面 
       path: '',
-      redirect: '/home'//重定向
+      redirect: '/home',//重定向
+      meta: {title:'首页'}
     },
     {
       path: '/home',
-      component: Home
+      component: Home,
+      meta: {title:'首页'}
     },
     {
       path: '/cart',
       meta:'购物车',
-      component: Cart
+      component: Cart,
+      meta: {title:'购物车'}
     },
     {
       path: '/personal',
       meta:'个人中心',
-      component: Personal
+      component: Personal,
+      meta: {title:'个人中心'}
     },
     {
       path: '/chooseAddress',
       meta:'选择地址',
       component: ChooseAddress,
+      meta: {title:'选择地址'},
       children:[{
         path: 'addAddress',
         meta:'添加地址',
         component: AddAddress,
+        meta: {title:'添加地址'}
       }] 
     },
     {
       path: '/addressManage',
       meta:'地址管理',
       component: AddressManage,
+      meta: {title:'地址管理'},
       children:[{
         path: 'addAddress',
         meta:'添加地址',
         component: AddAddress,
+        meta: {title:'添加地址'}
       }]
     },
     {
       path: '/order',
       meta:'我的订单',
-      component: OrderList
+      component: OrderList,
+      meta: {title:'我的订单'}
     },
     {
       path: '/orderConfirm',
       meta:'确认订单',
-      component: OrderConfirm
+      component: OrderConfirm,
+      meta: {title:'确认订单'}
     },
     {
       path: '/orderPay',
       meta:'订单支付',
-      component: OrderPay
+      component: OrderPay,
+      meta: {title:'订单支付'}
     },
     {
       path: '/productDetail',
       meta:'产品详情',
-      component: ProDetail
+      component: ProDetail,
+      meta: {title:'产品详情'}
     },
     {
       path: '/login',
       meta:'登录页面',
-      component: Login
+      component: Login,
+      meta: {title:'登录'}
     }
   ]
 })
+
